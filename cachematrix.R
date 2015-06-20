@@ -44,9 +44,8 @@ makeCacheMatrix <- function(x = matrix()) {
 ## It then caches the matrix inverse returned by solve into x using setInverse
 ## finally it returns the matrix inverse to the caller
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-    mInverse = x$getInverse()
+cacheSolve <- function(x, ...) {        
+    mInverse <- x$getInverse()
     
     if (!is.null(mInverse)) {
         message("returning cached data")
@@ -100,6 +99,26 @@ t_testMatrixCache <- function(msize = 5) {
     print(" ")
     print("Calling the cache function for the second time")
     out <- cacheSolve(z)
-    print(out)        
+    print(out)  
+    
+    print("Calling the cache function without any matrix")
+    f <- makeCacheMatrix()
+    out <- cacheSolve(f)    
+    print(out)
+    
+    print(" ")
+    print("Calling the set function to set a new matrix")
+    mInput <- matrix(runif(numEle, min = 10, max = 750), nrow = msize, ncol = msize)
+    f$set(mInput)
+    
+    print(" ")
+    print("Calling the cache function for the first time after setting a new matrix")
+    out <- cacheSolve(f)    
+    print(out)
+    
+    print(" ")
+    print("Calling the cache function for the second time")
+    out <- cacheSolve(f)
+    print(out)  
 }
 
